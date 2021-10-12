@@ -1,0 +1,122 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+def pytorch_version = "1.9.0"
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        minSdkVersion 24
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ["jnilib/"]
+        }
+    }
+}
+
+// TODO: Making publish as an individual gradle file
+signing {
+    required(project.hasProperty("staging") || project.hasProperty("snapshot"))
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                pom {
+                    name = "PyTorch Android native library"
+                    description = "PyTorch Android native library binary distribution"
+                    url = "http://www.djl.ai/android"
+                    packaging = "aar"
+
+                    licenses {
+                        license {
+                            name = "The Apache License, Version 2.0"
+                            url = "https://www.apache.org/licenses/LICENSE-2.0"
+                        }
+                    }
+
+                    scm {
+                        connection = "scm:git:git@github.com:deepjavalibrary/djl.git"
+                        developerConnection = "scm:git:git@github.com:deepjavalibrary/djl.git"
+                        url = "https://github.com/deepjavalibrary/djl"
+                        tag = "HEAD"
+                    }
+
+                    developers {
+                        developer {
+                            name = "DJL.AI Team"
+                            email = "djl-dev@amazon.com"
+                            organization = "Amazon AI"
+                            organizationUrl = "https://amazon.com"
+                        }
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                if (project.hasProperty("snapshot")) {
+                    name = "snapshot"
+                    url = "https://oss.sonatype.org/content/repositories/snapshots/"
+                    credentials {
+                        username = findProperty("ossrhUsername")
+                        password = findProperty("ossrhPassword")
+                    }
+                } else if (project.hasProperty("staging")) {
+                    name = "staging"
+                    url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                    credentials {
+                        username = findProperty("ossrhUsername")
+                        password = findProperty("ossrhPassword")
+                    }
+                } else {
+                    name = "local"
+                    url = "build/repo"
+                }
+            }
+        }
+    }
+}
+
+
+task processResources {
+    doLast {
+        def url = "https://publish.djl.ai/pytorch-${pytorch_version}/jnilib/${djl_version}/android"
+        def abis = ["armeabi-v7a", "arm64-v8a", "x86", "x86_64"]
+        abis.each { abi ->
+            def downloadPath = new URL("${url}/${abi}/libdjl_torch.so")
+            def file = file("${project.projectDir}/jnilib/${abi}/libdjl_torch.so")
+            if (!file.exists()) {
+                project.logger.lifecycle("${url}/${abi}/libdjl_torch.so")
+                file.getParentFile().mkdirs()
+                downloadPath.withInputStream { i -> file.withOutputStream { it << i } }
+            }
+        }
+    }
+}
+
+assemble.dependsOn processResources

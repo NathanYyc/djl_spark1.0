@@ -1,0 +1,62 @@
+@startuml
+class MxModel {
+    -MxNDManager manager;
+    -Symbol
+    +void close()
+}
+
+class MxPredictor<I, O> {
+    -NDManager manager;
+    +void close()
+}
+
+class TranslatorContext {
+    +NDManager ctxManager;
+    +void close()
+}
+
+class MxNDManager {
+    -MxNDManager parent;
+    +MxNDArray create(Pointer);
+    MxNDManager newSubManager()
+    MxNDManager newSubManager(Device device)
+    void attach(AutoCloseable resource)
+    void detach(AutoCloseable resource)
+    +void close()
+}
+
+class MxNDArray {
+    -NDManager manager;
+    -Pointer
+    void attach(MxNDManager manager)
+    void detach()
+    +void close()
+}
+
+class NativeResource {
+    -Pointer
+    +void close()
+}
+
+class Symbol {
+    -Pointer
+    -NDManager manager;
+    -MxNDArray array
+    +void close()
+}
+
+MxModel o-- Symbol : aggregation
+MxModel o-- MxNDManager : aggregation
+Symbol o-right- MxNDArray : aggregation
+
+MxNDArray --|> NativeResource : extends
+Symbol --|> NativeResource : extends
+
+
+MxNDArray o-right- MxNDManager : aggregation
+MxPredictor o-up- MxNDManager : aggregation
+TranslatorContext o-up- MxNDManager : aggregation
+
+
+
+@enduml

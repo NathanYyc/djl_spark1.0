@@ -1,0 +1,176 @@
+import org.w3c.dom.Document
+import org.w3c.dom.Element
+import org.w3c.dom.Node
+import org.w3c.dom.NodeList
+
+plugins {
+    id "java-platform"
+    id "maven-publish"
+    id 'signing'
+}
+
+group = "ai.djl"
+boolean isRelease = project.hasProperty("release") || project.hasProperty("staging")
+version = "${djl_version}" + (isRelease ? "" : "-SNAPSHOT")
+
+dependencies {
+    constraints {
+        api "ai.djl:api:${version}"
+        api "ai.djl:basicdataset:${version}"
+        api "ai.djl:model-zoo:${version}"
+        api "ai.djl:serving:${version}"
+        api "ai.djl.aws:aws-ai:${version}"
+        api "ai.djl.dlr:dlr-engine:${version}"
+        api "ai.djl.dlr:dlr-native-auto:${dlr_version}"
+        api "ai.djl.fasttext:fasttext-engine:${version}"
+        api "ai.djl.hadoop:hadoop:${version}"
+        api "ai.djl.mxnet:mxnet-engine:${version}"
+        api "ai.djl.mxnet:mxnet-model-zoo:${version}"
+        api "ai.djl.mxnet:mxnet-native-auto:${mxnet_version}"
+        api "ai.djl.onnxruntime:onnxruntime-engine:${version}"
+        api "ai.djl.paddlepaddle:paddlepaddle-engine:${version}"
+        api "ai.djl.paddlepaddle:paddlepaddle-model-zoo:${version}"
+        api "ai.djl.paddlepaddle:paddlepaddle-native-auto:${paddlepaddle_version}"
+        api "ai.djl.pytorch:pytorch-engine:${version}"
+        api "ai.djl.pytorch:pytorch-model-zoo:${version}"
+        api "ai.djl.pytorch:pytorch-native-auto:${pytorch_version}"
+        api "ai.djl.sentencepiece:sentencepiece:${version}"
+        api "ai.djl.tensorflow:tensorflow-api:${version}"
+        api "ai.djl.tensorflow:tensorflow-engine:${version}"
+        api "ai.djl.tensorflow:tensorflow-model-zoo:${version}"
+        api "ai.djl.tensorflow:tensorflow-native-auto:${tensorflow_version}"
+        api "ai.djl.tflite:tflite-engine:${version}"
+        api "ai.djl.tflite:tflite-native-auto:${tflite_version}"
+        api "ai.djl.ml.xgboost:xgboost:${version}"
+    }
+}
+
+project.tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+}
+
+signing {
+    required(project.hasProperty("staging") || project.hasProperty("snapshot"))
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications
+}
+
+publishing {
+    publications {
+        create("bom", MavenPublication) {
+            from(components["javaPlatform"])
+
+            pom {
+                name = "DJL Bill of Materials (BOM)"
+                description = "Deep Java Library (DJL) Bill of Materials (BOM)"
+                url = "http://www.djl.ai/bom"
+                packaging = "pom"
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0'
+                    }
+                }
+
+                scm {
+                    connection = "scm:git:git@github.com:deepjavalibrary/djl.git"
+                    developerConnection = "scm:git:git@github.com:deepjavalibrary/djl.git"
+                    url = "https://github.com/deepjavalibrary/djl"
+                    tag = "HEAD"
+                }
+
+                developers {
+                    developer {
+                        name = "DJL.AI Team"
+                        email = "djl-dev@amazon.com"
+                        organization = "Amazon AI"
+                        organizationUrl = "https://amazon.com"
+                    }
+                }
+
+                withXml {
+                    Element pomNode = asElement()
+                    Element dm = (Element) findChild(pomNode, "dependencyManagement")
+                    Element dependencies = (Element) findChild(dm, "dependencies")
+                    addDependency(dependencies, "ai.djl.mxnet", "mxnet-native-mkl", "osx-x86_64", "${mxnet_version}")
+                    addDependency(dependencies, "ai.djl.mxnet", "mxnet-native-mkl", "linux-x86_64", "${mxnet_version}")
+                    addDependency(dependencies, "ai.djl.mxnet", "mxnet-native-mkl", "win-x86_64", "${mxnet_version}")
+                    addDependency(dependencies, "ai.djl.mxnet", "mxnet-native-cu102mkl", "linux-x86_64", "${mxnet_version}")
+                    addDependency(dependencies, "ai.djl.mxnet", "mxnet-native-cu110mkl", "linux-x86_64", "${mxnet_version}")
+                    addDependency(dependencies, "ai.djl.pytorch", "pytorch-native-cpu", "osx-x86_64", "${pytorch_version}")
+                    addDependency(dependencies, "ai.djl.pytorch", "pytorch-native-cpu", "linux-x86_64", "${pytorch_version}")
+                    addDependency(dependencies, "ai.djl.pytorch", "pytorch-native-cpu", "win-x86_64", "${pytorch_version}")
+                    addDependency(dependencies, "ai.djl.pytorch", "pytorch-native-cpu-precxx11", "linux-x86_64", "${pytorch_version}")
+                    addDependency(dependencies, "ai.djl.pytorch", "pytorch-native-cu102", "linux-x86_64", "${pytorch_version}")
+                    addDependency(dependencies, "ai.djl.pytorch", "pytorch-native-cu102", "win-x86_64", "${pytorch_version}")
+                    addDependency(dependencies, "ai.djl.pytorch", "pytorch-native-cu111", "linux-x86_64", "${pytorch_version}")
+                    addDependency(dependencies, "ai.djl.pytorch", "pytorch-native-cu111", "win-x86_64", "${pytorch_version}")
+                    addDependency(dependencies, "ai.djl.tensorflow", "tensorflow-native-cpu", "osx-x86_64", "${tensorflow_version}")
+                    addDependency(dependencies, "ai.djl.tensorflow", "tensorflow-native-cpu", "linux-x86_64", "${tensorflow_version}")
+                    addDependency(dependencies, "ai.djl.tensorflow", "tensorflow-native-cpu", "win-x86_64", "${tensorflow_version}")
+                    addDependency(dependencies, "ai.djl.tensorflow", "tensorflow-native-cu110", "linux-x86_64", "${tensorflow_version}")
+                    addDependency(dependencies, "ai.djl.paddlepaddle", "paddlepaddle-native-cpu", "osx-x86_64", "${paddlepaddle_version}")
+                    addDependency(dependencies, "ai.djl.paddlepaddle", "paddlepaddle-native-cpu", "linux-x86_64", "${paddlepaddle_version}")
+                    addDependency(dependencies, "ai.djl.paddlepaddle", "paddlepaddle-native-cpu", "win-x86_64", "${paddlepaddle_version}")
+                    addDependency(dependencies, "ai.djl.dlr", "dlr-native-cpu", "osx-x86_64", "${dlr_version}")
+                    addDependency(dependencies, "ai.djl.dlr", "dlr-native-cpu", "linux-x86_64", "${dlr_version}")
+                    addDependency(dependencies, "ai.djl.tflite", "tflite-native-cpu", "osx-x86_64", "${tflite_version}")
+                    addDependency(dependencies, "ai.djl.tflite", "tflite-native-cpu", "linux-x86_64", "${tflite_version}")
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            if (project.hasProperty("snapshot")) {
+                name = "snapshot"
+                url = "https://oss.sonatype.org/content/repositories/snapshots/"
+                credentials {
+                    username = findProperty("ossrhUsername")
+                    password = findProperty("ossrhPassword")
+                }
+            } else if (project.hasProperty("staging")) {
+                name = "staging"
+                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                credentials {
+                    username = findProperty("ossrhUsername")
+                    password = findProperty("ossrhPassword")
+                }
+            } else {
+                name = "local"
+                url = "build/repo"
+            }
+        }
+    }
+}
+
+def static findChild(Element element, String name) {
+    NodeList nl = element.getChildNodes()
+    for (int i = 0; i < nl.getLength(); ++i) {
+        Node node = nl.item(i)
+        if (node.getNodeName().endsWith(name)) {
+            return node
+        }
+    }
+    return null
+}
+
+def static addDependency(Element element, String groupId, String artifactId, String classifier, String version) {
+    Document doc = element.getOwnerDocument()
+    Element dep = doc.createElement("dependency")
+    addNode(doc, dep, "groupId", groupId)
+    addNode(doc, dep, "artifactId", artifactId)
+    addNode(doc, dep, "classifier", classifier)
+    addNode(doc, dep, "version", version)
+    element.appendChild(dep)
+}
+
+def static addNode(Document doc, Element element, String name, String value) {
+    Element node = doc.createElement(name)
+    node.appendChild(doc.createTextNode(value))
+    element.appendChild(node)
+}

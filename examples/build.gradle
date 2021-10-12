@@ -1,0 +1,59 @@
+plugins {
+    id 'application'
+}
+
+dependencies {
+    implementation "commons-cli:commons-cli:${commons_cli_version}"
+    implementation "org.apache.logging.log4j:log4j-slf4j-impl:${log4j_slf4j_version}"
+    implementation project(":basicdataset")
+    implementation project(":model-zoo")
+
+    if (System.getProperty("ai.djl.default_engine") == "PyTorch") {
+        runtimeOnly project(":pytorch:pytorch-model-zoo")
+        runtimeOnly "ai.djl.pytorch:pytorch-native-auto:${pytorch_version}-SNAPSHOT"
+    } else if (System.getProperty("ai.djl.default_engine") == "TensorFlow") {
+        runtimeOnly "ai.djl.tensorflow:tensorflow-native-auto:${tensorflow_version}"
+    } else {
+        runtimeOnly project(":mxnet:mxnet-model-zoo")
+        runtimeOnly "ai.djl.mxnet:mxnet-native-auto:${mxnet_version}"
+    }
+
+    testImplementation("org.testng:testng:${testng_version}") {
+        exclude group: "junit", module: "junit"
+    }
+}
+
+application {
+    getMainClass().set(System.getProperty("main", "ai.djl.examples.inference.ObjectDetection"))
+}
+
+run {
+    environment("TF_CPP_MIN_LOG_LEVEL", "1") // turn off TensorFlow print out
+    systemProperties System.getProperties()
+    systemProperties.remove("user.dir")
+    systemProperty("file.encoding", "UTF-8")
+}
+
+task listmodels(type: JavaExec) {
+    systemProperties System.getProperties()
+    systemProperties.remove("user.dir")
+    systemProperty("file.encoding", "UTF-8")
+    classpath = sourceSets.main.runtimeClasspath
+    main = "ai.djl.examples.inference.ListModels"
+}
+
+jar {
+        manifest {
+            attributes (
+                    "Main-Class" : "ai.djl.examples.training.TrainBertOnCode",
+                    "Multi-Release" : true
+            )
+        }
+        includeEmptyDirs = false
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        from configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+}
+
+tasks.distTar.enabled = false
+tasks.distZip.enabled = false

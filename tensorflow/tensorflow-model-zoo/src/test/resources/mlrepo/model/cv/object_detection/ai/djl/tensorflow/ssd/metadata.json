@@ -1,0 +1,52 @@
+{
+  "metadataVersion": "0.2",
+  "resourceType": "model",
+  "application": "cv/object_detection",
+  "groupId": "ai.djl.tensorflow",
+  "artifactId": "ssd",
+  "name": "SingleShotDetection",
+  "description": "SSD object detection",
+  "website": "http://www.djl.ai/tensorflow/model-zoo",
+  "licenses": {
+    "license": {
+      "name": "The Apache License, Version 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "artifacts": [
+    {
+      "version": "0.0.1",
+      "snapshot": false,
+      "name": "ssd",
+      "properties": {
+        "backbone": "mobilenet_v2",
+        "dataset": "openimages_v4"
+      },
+      "arguments": {
+        "width": 256,
+        "height": 256,
+        "resize": true,
+        "threshold": 0.4,
+        "synsetFileName": "classes.txt",
+        "translatorFactory": "ai.djl.tensorflow.zoo.cv.objectdetction.TfSsdTranslatorFactory"
+      },
+      "options": {
+        "Tags": ""
+      },
+      "files": {
+        "classes": {
+          "uri": "https://mlrepo.djl.ai/model/cv/object_detection/ai/djl/tensorflow/openimage_v4_classes.txt",
+          "sha1Hash": "0ba39c181db3a9fce4bd45bee5fa85d67be9fc1b",
+          "name": "classes.txt",
+          "size": 5475
+        },
+        "model": {
+          "uri": "mobilenet_v2/openimages_v4/0.0.1/ssd_mobilenetv2.zip",
+          "sha1Hash": "c76f99540169471f96d599ddf302b9ccf1030e36",
+          "name": "",
+          "size": 53293615
+        }
+      }
+    }
+  ]
+}

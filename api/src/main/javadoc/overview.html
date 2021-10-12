@@ -1,0 +1,47 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<p>This document is the API specification for the Deep Java Library (DJL).</p>
+
+<p>The key design goal for the DJL is to simplify the use of deep learning for Java
+  developers. Developers don't need to be machine learning/deep learning experts to get started.
+  They can start with their existing Java expertise as a foundation to learn and use ML/DL.
+  Developers can
+  use their favorite IDE to build, train, and deploy their models. They can also easily integrate
+  these models with their
+  Java applications. They don't have to compromise on model performance, scale, or choice of GPU vs.
+  CPUs.
+
+<p>DJL is deep learning engine agnostic. Developers don't have to make a choice
+  between engines when they start their project. They can switch to a different engine at any
+  time.
+
+<p>DJL provides a native Java development experience and functions just like any other regular Java
+  library would.
+  DJL's ergonomic API interface is designed to guide developers with best practices to accomplish
+  deep learning tasks.
+
+<p>The following is an example of how to write inference code:
+
+<pre>
+    // Assume user has a pre-trained already, they just need load it
+    Model model = <b>Model.load</b>(modelDir, modelName);
+
+    // User can implement <a href="ai/djl/translate/Translator.html"><b>Translator</b></a> interface, read <a
+    href="ai/djl/translate/Translator.html"><b>Translator</b></a> for detail.
+    Translator translator = new <b>MyTranslator</b>();
+
+    // Next user need create a <b>Predictor</b>, and use <a
+    href="ai/djl/inference/Predictor.html#predict-I-"><b>Predictor.predict()</b></a>
+    // to get prediction.
+    try (Predictor&lt;Image, DetectedObjects&gt; predictor = <b>model.newPredictor</b>(translator)) {
+        DetectedObjects result = predictor.<b>predict</b>(img);
+    }
+</pre>
+
+<p>More tutorials, documents, and examples can be on our <a href="https://github.com/deepjavalibrary/djl/tree/master/docs">GitHub repository</a>.
+
+</body>
+</html>

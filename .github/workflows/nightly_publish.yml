@@ -1,0 +1,201 @@
+name: Nightly Publish
+
+on:
+  schedule:
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'staging/snapshot, default is snapshot'
+        required: true
+        default: 'snapshot'
+
+jobs:
+  build:
+    if: github.repository == 'deepjavalibrary/djl'
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ macos-latest, ubuntu-18.04 ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      # Enable gradle cache: https://github.com/actions/cache/blob/master/examples.md#java---gradle
+      - uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: check disk space
+        run: df -h
+      - name: Build with Gradle
+        run: ./gradlew -Dnightly=true build jRR jRV
+      - name: API test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: api
+          path: api/build/reports
+      - name: basicdataset test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: basicdataset
+          path: basicdataset/build/reports
+      - name: examples test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: examples
+          path: examples/build/reports
+      - name: integration test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: integration
+          path: integration/build/reports
+      - name: model-zoo test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: model-zoo
+          path: model-zoo/build/reports
+      - name: mxnet-engine test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: mxnet-engine
+          path: mxnet/mxnet-engine/build/reports
+      - name: mxnet-model-zoo test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: mxnet-model-zoo
+          path: mxnet/mxnet-model-zoo/build/reports
+      - name: onnxruntime/onnxruntime-engine test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: onnxruntime
+          path: onnxruntime/onnxruntime-engine/build/reports
+      - name: pytorch-engine test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: pytorch-engine
+          path: pytorch/pytorch-engine/build/reports
+      - name: tensorflow-engine test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: tensorflow-engine
+          path: tensorflow/tensorflow-engine/build/reports
+      - name: tensorflow-model-zoo test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: tensorflow-model-zoo
+          path: tensorflow/tensorflow-model-zoo/build/reports
+
+  test-pytorch:
+    if: github.repository == 'deepjavalibrary/djl'
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ macos-latest, ubuntu-18.04, windows-latest ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      # Enable gradle cache: https://github.com/actions/cache/blob/master/examples.md#java---gradle
+      - uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Test with Gradle
+        run: ./gradlew :integration:test "-Dai.djl.default_engine=PyTorch"
+
+  test-tensorflow:
+    if: github.repository == 'deepjavalibrary/djl'
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ macos-latest, ubuntu-18.04, windows-latest ]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      # Enable gradle cache: https://github.com/actions/cache/blob/master/examples.md#java---gradle
+      - uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Test with Gradle
+        run: ./gradlew :integration:test "-Dai.djl.default_engine=TensorFlow"
+
+  publish:
+    if: github.repository == 'deepjavalibrary/djl'
+    runs-on: ubuntu-18.04
+    needs: [ build, test-pytorch, test-tensorflow ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      # Enable gradle cache: https://github.com/actions/cache/blob/master/examples.md#java---gradle
+      - uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Publish to snapshot repository
+        if: ${{ github.event.inputs.mode == '' || github.event.inputs.mode == 'snapshot' }}
+        run: |
+          ./gradlew publish -Psnapshot
+          cd bom
+          ./gradlew publish -Psnapshot
+        env:
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.ORG_GRADLE_PROJECT_signingKey }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingPassword }}
+          ORG_GRADLE_PROJECT_ossrhUsername: ${{ secrets.ORG_GRADLE_PROJECT_ossrhUsername }}
+          ORG_GRADLE_PROJECT_ossrhPassword: ${{ secrets.ORG_GRADLE_PROJECT_ossrhPassword }}
+      - name: Publish to staging repository
+        if: ${{ github.event.inputs.mode == 'staging' }}
+        run: |
+          ./gradlew publish -P${{ github.event.inputs.mode }}
+          cd bom
+          ./gradlew publish -P${{ github.event.inputs.mode }}
+        env:
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.ORG_GRADLE_PROJECT_signingKey }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingPassword }}
+          ORG_GRADLE_PROJECT_ossrhUsername: ${{ secrets.ORG_GRADLE_PROJECT_ossrhUsername }}
+          ORG_GRADLE_PROJECT_ossrhPassword: ${{ secrets.ORG_GRADLE_PROJECT_ossrhPassword }}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+      - name: Copy files to S3 with the AWS CLI
+        if: ${{ github.event.inputs.mode == 'staging' }}
+        run: |
+          ./gradlew serving:serving:dT -Pstaging
+          aws s3 cp serving/serving/build/distributions/serving-*.tar s3://djl-ai/publish/djl-serving/
+          aws cloudfront create-invalidation --distribution-id E371VB8JQ6NRVY --paths "/djl-serving/*"

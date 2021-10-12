@@ -1,0 +1,24 @@
+group "ai.djl.hadoop"
+
+dependencies {
+    api project(":api")
+    api "org.apache.hadoop:hadoop-client:${hadoop_version}"
+
+    testImplementation project(":mxnet:mxnet-engine")
+    testImplementation "ai.djl.mxnet:mxnet-native-auto:${mxnet_version}"
+    testImplementation "org.apache.hadoop:hadoop-minicluster:${hadoop_version}"
+
+    testImplementation("org.testng:testng:${testng_version}");
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            pom {
+                name = "Hadoop hdfs integration for DJL"
+                description = "Hadoop hdfs integration for DJL"
+                url = "http://www.djl.ai/extensions/${project.name}"
+            }
+        }
+    }
+}

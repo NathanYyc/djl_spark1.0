@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html lang="en" class="gr__materializecss_com"><head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159559852-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-159559852-2');
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                                                          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                                                                                                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                                                                                                        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+     })(window,document,'script','dataLayer','GTM-WQBQJWP');</script>
+    <!-- End Google Tag Manager -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DJL - Deep Java Library</title>
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://djl.ai/website/css/style1.0.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link rel="shortcut icon" type="image/x-icon" href="https://djl.ai/website/img/favicon.png"/>
+    <link rel="shortcut icon" sizes="96x96" href="https://djl.ai/website/img/favicon.png">
+    <link rel="apple-touch-icon" href="https://djl.ai/website/img/favicon.png">
+</head>
+<body data-gr-c-s-loaded="true">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQBQJWP"
+                    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div id="app">
+    <nav class="white app-nav" role="navigation" v-cloak>
+        <div class="nav-wrapper">
+            <div class="row">
+                <a href="https://djl.ai" class="logo" id="logo-container">
+                    <img src="https://djl.ai/website/img/djl-middle.png">
+                </a>
+                <div class="right col s10 hide-on-med-and-down navLinksWrap">
+                    <ul class="nav-ul">
+                        <li v-for="(item, i) in navLinks" :key="i">
+                            <a :href="item.url">{{item.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <ul id="nav-mobile" class="sidenav">
+                    <li v-for="(item, i) in navLinks" :key="i">
+                        <a :href="item.url">{{item.name}}</a>
+                    </li>
+                </ul>
+                <a data-target="nav-mobile"
+                class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container contentWrap">
+    <div class="card white z-depth-5">
+        <div class="section">
+            <div class="row">
+                <h3 class="center">DJL Blogs</h3>
+                <ul class="col s10 offset-s1 collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Learn to Create a Doodle Draw Game on Android</div>
+                        <div class="collapsible-body">
+                            <span>In this tutorial, we will walk through the major steps to deploy a doodle recognition model from PyTorch on Android. Because the code base is relatively large, we will cover the most important parts you need to understand for the model to work correctly. You can access our example project to start crafting.</span>
+                            <p><a href="https://towardsdatascience.com/learn-to-create-a-doodle-draw-game-on-android-f713e64408a7">Read More</a></p>
+                        </div>
+                    <li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>NDArray — — a Java based N-Dim array toolkit</div>
+                        <div class="collapsible-body">
+                            <span>In this tutorial, we will walk through how you can leverage the NDArray from DJL to write your NumPy code in Java and apply NDArray into a real-world application.</span>
+                            <p><a href="https://towardsdatascience.com/ndarray-a-java-based-n-dim-array-toolkit-60b4035b10b8">Read More</a></p>
+                        </div>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Detecting pneumonia from chest x-ray images in Java</div>
+                        <div class="collapsible-body">
+                            <span>In this post, we illustrate how artificial intelligence can assist clinical decision making with a focus on enterprise deployment. This work leverages a model trained using Keras and TensorFlow with this Kaggle kernel. In this blog post, we will focus on generating predictions with this model using Deep Java Library (DJL), an open-source library to build and deploy DL in Java.</span>
+                            <p><a href="https://towardsdatascience.com/detecting-pneumonia-from-chest-x-ray-images-e02bcf705dd6">Read More</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Deep Java Learning Einführung – Teil 1: NDManager & NDArray</div>
+                        <div class="collapsible-body">
+                            <span>Nach unserer ersten Vorstellung von Amazons neuem Deep Learning Frameworks für Java, DJL, wollen wir nun in einer Reihe von Anfängerposts Schritt für Schritt die Grundlagen von Deep Learning unter Java mit DJL vorstellen. Hierbei soll es nicht um das schnelle Kopieren von Code Snippets, sondern um das wirkliche Verständnis des Frameworks und der Konzepte […]</span>
+                            <p><a href="https://divis.io/2020/05/deep-java-learning-einfuehrung-teil-1-ndmanager-ndarray/">Weiterlesen</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Amazon DJL – ein neues Deep Learning Framework für Java</div>
+                        <div class="collapsible-body">
+                            <span>Wer auf der JVM und insbesondere in Java mit neuronalen Netzen und Deep Learning experimentieren wollte, für die gab es bisher nur wenig Auswahl. Wer ausschließlich auf Java setzen wollte, kam bisher an DL4J nicht vorbei. Wenn es die JVM, aber nicht unbedingt Java sein muss, kommt auch noch das Scala Frontend von MXNet in Frage. Wen schließlich ein wenig Python nicht schreckt, die kann eine Hybrid Lösung aus TensorFlow und Java probieren, wie wir bereits in früheren Artikeln erläutert haben.</span>
+                            <p><a href="https://divis.io/2020/04/amazon-djl-ein-neues-deep-learning-framework-fuer-java/">Weiterlesen</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Introducing Deep Java Library(DJL)</div>
+                        <div class="collapsible-body">
+                            <span>We are excited to announce the Deep Java Library (DJL), an open source library to develop, train and run Deep learning models in Java using intuitive, high-level APIs. If you are a Java user interested in learning Deep learning, DJL is a great way to start learning. If you’re a Java developer working with Deep learning models, DJL will simplify the way you train and run predictions. In this post, we will show how to run a prediction with a pre-trained Deep learning model in minutes.</span>
+                            <p><a href="https://towardsdatascience.com/introducing-deep-java-library-djl-9de98de8c6ca">Read More</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Implement Object Detection with PyTorch in Java in 5 minutes</div>
+                        <div class="collapsible-body">
+                            <span>While there are a variety of options to serve PyTorch models in production, there are only a few options to deploy PyTorch models natively in Java. Previously, users could write a Java wrapper around the PyTorch C++ API or use the experimental PyTorch Java bindings. Amazon’s Deep Java Library (DJL) now offers the PyTorch and Java community a simpler option with its easy to use high-level APIs. By abstracting the complexity involved in ML and bundling tedious data processing routines, DJL simplifies running predictions with a PyTorch model down to a few lines of code. In our two-part blog series, we demonstrate how users can run inference with PyTorch. First with pre-trained PyTorch models, then with user-generated PyTorch models.</span>
+                            <p><a href="https://towardsdatascience.com/implement-object-detection-with-pytorch-in-java-in-5-minutes-c3ba5769e7aa">Read More</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Adopting machine learning in your microservices with DJL (Deep Java Library) and Spring Boot</div>
+                        <div class="collapsible-body">
+                            <span>Many AWS customers—startups and large enterprises—are on a path to adopt machine learning and deep learning in their existing applications. The reasons for machine learning adoption are dictated by the pace of innovation in the industry, with business use cases ranging from customer service (including object detection from images and video streams, sentiment analysis) to fraud detection and collaboration. However, until recently, the adoption learning curve was steep and required development of internal technical expertise in new programming languages (e.g., Python) and frameworks, with cascading effect on the whole software development lifecycle, from coding to building, testing, and deployment. The approach outlined in this blog post enables enterprises to leverage existing talent and resources (frameworks, pipelines, and deployments) to integrate machine learning capabilities.</span>
+                            <p><a href="https://aws.amazon.com/cn/blogs/opensource/adopting-machine-learning-in-your-microservices-with-djl-deep-java-library-and-spring-boot/">Read More</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Machine Learning in Java With Amazon Deep Java Library</div>
+                        <div class="collapsible-body">
+                            <span>Today, many of these solutions are primarily developed in Python using open source and proprietary ML toolkits, each with their own APIs. Despite Java's popularity in enterprises, there aren’t any standards to develop machine learning applications in Java. JSR-381 was developed to address this gap by offering Java application developers a set of standard, flexible and Java-friendly APIs for Visual Recognition (VisRec) applications such as image classification and object detection. JSR-381 has several implementations that rely on machine learning platforms such as TensorFlow, MXNet and DeepNetts. One of these implementations is based on Deep Java Library (DJL), an open source library developed by Amazon to build machine learning in Java. DJL offers hooks to popular machine learning frameworks such as TensorFlow, MXNet, and PyTorch by bundling requisite image processing routines, making it a flexible and simple choice for JSR-381 users.</span>
+                            <p><a href="https://www.infoq.com/articles/java-machine-learning-djl/">Read More</a></p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <h4 class="center">中文版</h4>
+                <ul class="col s10 offset-s1 collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>NDArray — 基于 Java 的 N 维数组工具</div>
+                        <div class="collapsible-body">
+                            <span>随着数据科学在生产中的应用逐步增加，使用N维数组灵活的表达数据变得愈发重要。我们可以将过去数据科学运算中的多维循环嵌套运算简化为简单几行。由于进一步释放了计算并行能力，这几行简单的代码运算速度也会比传统多维循环快很多。这种数学计算的包已经成为于数据科学，图形学以及机器学习领域的标准。同时它的影响力还在不断的扩大到其他领域。 在Python的世界，调用NDArray的标准包叫做NumPy。但是如今在Java领域中，并没有与之同样标准的库。为了给Java开发者创造同一种使用环境，亚马逊云服务开源了DJL，一个基于Java的深度学习库。尽管它包含了深度学习模块，但是它最核心的NDArray系统可以被用作N维数组的标准。它具备优良的可扩展性，全平台支持，以及强大的后端引擎支持 (TensorFlow, PyTorch, Apache MXNet)。无论是CPU还是GPU, PC还是安卓，DJL都可以轻而易举的完成任务。 在这个文章中，我们将带你了解NDArray，并且教你如何写与Numpy同样简单的Java代码以及如何将NDArray使用在现实中的应用之中。</span>
+                            <p><a href="https://aws.amazon.com/cn/blogs/china/ndarray-java-based-n-dimensional-array-tool/">阅读全文</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>十分钟轻松使用 Scala 在 Apache Spark 部署深度学习模型</div>
+                        <div class="collapsible-body">
+                            <span>深度学习在大数据领域上的应用日趋广泛，可是在Java/Scala上的部署方案却屈指可数。亚马逊开源项目团队另辟蹊径，利用DJL帮助用户部署深度学习应用在Spark上。只需10分钟，你就可以轻松部署TensorFlow，PyTorch，以及MXNet的模型在大数据生产环境中。</span>
+                            <p><a href="https://aws.amazon.com/cn/blogs/china/deep-learning-with-spark-in-deep-java-library-in-10-minutes/">阅读全文</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>深度解析 Amazon Retail System 用户倾向预测模型以及使用 DJL 在 Apache Spark 进行深度学习推理任务</div>
+                        <div class="collapsible-body">
+                            <span>在亚马逊，我们使用Apache MXNet构造了一个多标签分类模型用于在数千类别里预测用户倾向。通过预测的结果，我们可以创造一种个性化的内容，帮助用户去选择最好的商品。这个文章将通过准备数据，模型构造和模型部署三个步骤来介绍在构造模型中我们遇到的各种挑战以及使用Deep Java Library (DJL) 在Apache Spark上进行大规模的深度学习推理任务。因为使用的工具完全开源，你也可以尝试去构建类似的应用。</span>
+                            <p><a href="https://amazonaws-china.com/cn/blogs/china/how-amazon-retail-systems-run-machine-learning-predictions-with-apache-spark-using-deep-java-library/">阅读全文</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>JAVA 程序员的 AI 工具箱 – Deep Java Library (DJL)</div>
+                        <div class="collapsible-body">
+                            <span>这就要引出今天的主角 Deep Java Library （简称DJL）。DJL 是一个很新的项目，在2019年12月初的AWS  re: invest大会上才正式的发布出来。。简单来说，DJL是一个使用Java API简化模型训练、测试、部署和使用深度学习模型进行推理的开源库深度学习工具包，开源的许可协议是Apache-2.0。对于Java开发者而言，可以在Java中开发及应用原生的机器学习和深度学习模型，同时简化了深度学习开发的难度。通过DJL提供的直观的、高级的API，Java开发人员可以训练自己的模型，或者利用数据科学家用Python预先训练好的模型来进行推理。如果您恰好是对学习深度学习感兴趣的Java开发者，那么DJL无疑将是开始深度学习应用的一个最好的起点。</span>
+                            <p><a href="https://aws.amazon.com/cn/blogs/china/java-programmers-ai-toolkit-deep-java-library-djl/">阅读全文</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>5分钟！用Java实现目标检测 (PyTorch)</div>
+                        <div class="collapsible-body">
+                            <span>在PyTorch领域，尽管部署一个模型有很多选择，可为Java开发人员准备的选项却屈指可数。在过去，用户可以用PyTorch C++ 写JNI (Java Native Interface) 来实现这个过程。最近，PyTorch 1.4 发布了试验性的Java 前端。这两种解决方案都没有办法能让Java开发者很好的使用，开发者需要从易于使用和易于维护中二选一。针对于这个问题，亚马逊云服务 (AWS)开源了 Deep Java Library (DJL)，一个为Java开发者设计的深度学习库。它兼顾了易用性和可维护性，一切运行效率以及内存管理问题都得到了很好的处理。DJL使用起来异常简单。只需几行代码，用户就可以轻松部署深度学习模型用作推理。那么我们就开始上手用DJL部署一个PyTorch 模型吧。</span>
+                            <p><a href="https://zhuanlan.zhihu.com/p/138224608">阅读全文</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>使用 DJL (Deep Java Library) 和 Spring Boot 在您的微服务中采用机器学习</div>
+                        <div class="collapsible-body">
+                            <span>很多 AWS 客户（包括初创公司和大型企业）都正在其现有应用程序中采用机器学习和深度学习。行业的创新速度促使各企业采用机器学习，其涉及的业务使用案例从客户服务（包括从图像和视频流进行对象检测、情绪分析）到欺诈检测与协作不等。然而，直到最近，采用学习曲线仍然相当陡峭，需要用新的编程语言（例如 Python）和框架开发内部技术专业知识，从而对从编写代码到构建、测试和部署的整个软件开发声明周期产生级联效应。本博客文章中所述的方法可使企业利用现有的才能和资源（框架、管道和部署）来集成机器学习功能。</span>
+                            <p><a href="https://aws.amazon.com/cn/blogs/china/adopting-machine-learning-in-your-microservices-with-djl-deep-java-library-and-spring-boot/">阅读全文</a></p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="page-footer grey darken-3">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">About Us</h5>
+                <p class="grey-text text-lighten-4">Built with <span style="color: red;">&hearts;</span> for the Java community by <a href="https://docs.djl.ai/leaders.html">DJL Developers</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            Copyright 2019 <a class="brown-text text-lighten-3" href="http://aws.amazon.com/">Amazon.com, Inc.</a> or its
+            affiliates. All Rights Reserved.
+        </div>
+    </div>
+</footer>
+
+<!--  Scripts-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="js/init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="./js/index.js"></script>
+ 
+<div class="sidenav-overlay"></div>
+<div class="drag-target"></div>
+<div class="sidenav-overlay"></div><div class="drag-target"></div></body></html>

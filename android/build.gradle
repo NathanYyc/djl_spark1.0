@@ -1,0 +1,29 @@
+buildscript {
+
+    repositories {
+        maven {
+            url "https://mlrepo.djl.ai/maven/"
+        }
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.6.3'
+    }
+}
+
+allprojects {
+    group 'ai.djl.android'
+    boolean isRelease = project.hasProperty("release") || project.hasProperty("staging")
+    version = djl_version + (isRelease ? "" : "-SNAPSHOT")
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

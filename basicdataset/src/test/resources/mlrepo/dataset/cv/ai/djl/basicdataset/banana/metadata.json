@@ -1,0 +1,34 @@
+{
+  "metadataVersion": "0.2",
+  "resourceType": "dataset",
+  "application": "cv",
+  "groupId": "ai.djl.basicdataset",
+  "artifactId": "banana",
+  "name": "Banana",
+  "description": "Banana detection dataset",
+  "website": "http://www.djl.ai/basicdataset",
+  "licenses": {
+    "license": {
+      "name": "The Apache License, Version 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "artifacts": [
+    {
+      "version": "1.0",
+      "snapshot": false,
+      "files": {
+        "train": {
+          "uri": "1.0/train.zip",
+          "sha1Hash": "93986b0b3ef507ec5158bb17a432df16ef8a62b6",
+          "size": 16934214
+        },
+        "test": {
+          "uri": "1.0/test.zip",
+          "sha1Hash": "e09c3705b4d6f8d7b500c22d52b7bbccc32b64fe",
+          "size": 1728085
+        }
+      }
+    }
+  ]
+}

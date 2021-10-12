@@ -1,0 +1,47 @@
+{
+  "metadataVersion": "0.2",
+  "resourceType": "model",
+  "application": "cv/image_classification",
+  "groupId": "ai.djl.tensorflow",
+  "artifactId": "mobilenet",
+  "name": "MobileNet",
+  "description": "MobileNet image classification",
+  "website": "http://www.djl.ai/tensorflow/model-zoo",
+  "licenses": {
+    "license": {
+      "name": "The Apache License, Version 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "artifacts": [
+    {
+      "version": "0.0.1",
+      "snapshot": false,
+      "name": "mobilenet",
+      "properties": {
+        "flavor": "v2",
+        "dataset": "imagenet"
+      },
+      "arguments": {
+        "width": 224,
+        "height": 224,
+        "resize": true,
+        "toTensor": false,
+        "range": "-1,1"
+      },
+      "files": {
+        "synset": {
+          "uri": "https://mlrepo.djl.ai/model/cv/image_classification/ai/djl/tensorflow/synset.txt",
+          "sha1Hash": "e03a09a8336d75b7bb008748eadee253a30cb2c2",
+          "size": 31675
+        },
+        "model": {
+          "uri": "0.0.1/mobilenetv2.zip",
+          "sha1Hash": "f3c563cb110eab25d5e2dcd23faeb715d1a026e5",
+          "name": "",
+          "size": 15982749
+        }
+      }
+    }
+  ]
+}

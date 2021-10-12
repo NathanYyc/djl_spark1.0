@@ -1,0 +1,63 @@
+name: Docs
+
+on:
+  pull_request:
+    paths:
+      - "**.ipynb"
+      - "docs/mkdocs.yml"
+  # Publish docs weekly
+  schedule:
+    - cron:  '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  documentation:
+    if: github.repository == 'deepjavalibrary/djl'
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Set up Python3
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+      - name: Install CN fonts
+        run: sudo apt-get update && sudo apt-get install fonts-arphic-uming
+      - name: install Python Dependencies
+        run: pip3 install nbconvert==5.6.1 mkdocs mkdocs-exclude mknotebooks==0.4.1 mkdocs-material jupyter Pygments Markdown==3.2.2
+      - name: Install IJava kernel
+        run: |
+          git clone https://github.com/frankfliu/IJava.git
+          cd IJava/
+          ./gradlew installKernel
+      - name: checkout repo
+        uses: actions/checkout@v2
+      - name: add mybinder link
+        run: |
+          python3 tools/scripts/add_online_runner.py
+      - name: run Notebooks
+        run: |
+          cd jupyter
+          bash test_notebook.sh
+      - name: clone demos
+        run: |
+          cd docs
+          git clone https://github.com/aws-samples/djl-demo.git demos
+      - name: build docs
+        run: |
+          cd docs
+          mkdocs build --site-dir ../../site
+      - name: Configure AWS Credentials
+        if: github.event_name != 'pull_request'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+      - name: Copy files to S3 with the AWS CLI
+        if: github.event_name != 'pull_request'
+        run: |
+          aws s3 sync ../site s3://djl-ai/documentation/nightly --delete
+          aws cloudfront create-invalidation --distribution-id E733IIDCG0G5U --paths "/*"
