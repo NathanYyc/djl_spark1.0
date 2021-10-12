@@ -75,12 +75,14 @@ public final class Bert{
                 for(Pair<String, Parameter> p: model.getBlock().getParameters()){
                     System.out.println(p.getValue().getName());
                 }
+
+                //config spark
                 SparkSession spark = SparkSession.builder().master("spark://Master:7077").config("spark.rpc.message.maxSize", 512).getOrCreate();
 
 
                 System.out.println("dictionary size:" + dataset.getDictionarySize());
-                //EasyTrain.fit(trainer, argu.getEpoch(), trainingSet, validateSet);
-                DistributedTrain.fit(trainer, 5, trainingDataset,  null,spark, arguments);
+
+                DistributedTrain.fit(trainer, 5, trainingDataset, null, spark, 4, arguments);
 
                 //EasyTrain.fit(trainer, arguments.getEpoch(), dataset, null);
                 return trainer.getTrainingResult();

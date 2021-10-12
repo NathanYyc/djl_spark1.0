@@ -61,7 +61,6 @@ public class DistributedTrain {
 
     private static Set<String> serverSet;
 
-    private static final int parameterServerSize = 1;
 
 
     private static int nodeNum;
@@ -75,6 +74,7 @@ public class DistributedTrain {
             BertCodeDataset[] trainingDataset,
             Dataset validateDataset,
             SparkSession spark,
+            int parameterServerSize,
             Bert.BertArguments arguments
     ) throws IOException, TranslateException, InterruptedException, MalformedModelException {
         JavaSparkContext javaSparkContext = JavaSparkContext.fromSparkContext(spark.sparkContext());
